@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel IMS</string>
+    <string name="sim_slot_label">SIM %1$d</string>
+    <string name="sim_empty_title">未读取到已激活 SIM 卡</string>
+    <string name="sim_empty_subtitle">请确认手机内已插入并启用 SIM 卡，然后点击刷新。</string>
+    <string name="sim_waiting_shizuku_title">等待 Shizuku 授权</string>
+    <string name="sim_waiting_shizuku_subtitle">请先启动 Shizuku 并点击右上角授予本应用权限。</string>
+    <string name="sim_load_error_title">读取 SIM 状态失败</string>
+
+    <string name="shizuku_ready">Shizuku 已就绪</string>
+    <string name="shizuku_need_permission">点此授权 Shizuku</string>
+    <string name="shizuku_disconnected">Shizuku 未运行</string>
+    <string name="action_refresh">刷新状态</string>
+    <string name="auto_apply_label">Shizuku 就绪自动应用</string>
+    <string name="auto_apply_desc">重启或重连 Shizuku 后自动按每张卡保存的策略恢复覆盖</string>
+
+    <string name="status_registered">IMS 已注册</string>
+    <string name="status_registering">IMS 注册中…</string>
+    <string name="status_not_registered">IMS 未注册</string>
+    <string name="status_unknown">IMS 状态未知</string>
+    <string name="transport_cellular">蜂窝移动 (LTE / NR)</string>
+    <string name="transport_wlan">WLAN (IWLAN)</string>
+    <string name="transport_unknown">传输通道未知</string>
+    <string name="override_applied">配置已应用</string>
+    <string name="override_default">系统默认</string>
+
+    <string name="warning_cn_vowifi_title">检测到中国大陆卡启用了 VoWiFi</string>
+    <string name="warning_cn_vowifi_body">当前 SIM (%1$s) 系统侧开启了 VoWiFi 或 Wi-Fi 优先。在无公网 ePDG 的情况下，Android 17 QNS 会将 IMS 锁死在 IWLAN 导致无法注册。建议立即关闭并修复。</string>
+    <string name="warning_wifi_pref_title">建议改用“蜂窝移动优先”</string>
+    <string name="warning_wifi_pref_body">Wi-Fi 优先模式下若遇到网络或 DNS 异常，可能阻塞蜂窝 IMS 注册。</string>
+    <string name="action_fix_now">一键关闭 VoWiFi 并修复</string>
+
+    <string name="section_ims">通话与 IMS 注册</string>
+    <string name="section_5g">5G 与信号</string>
+
+    <string name="feat_volte">VoLTE 高清语音</string>
+    <string name="feat_volte_desc">开启 4G 高清通话并同步激活 VoIMS 配置</string>
+    <string name="feat_vonr">VoNR 5G 语音</string>
+    <string name="feat_vonr_desc">5G 下直接承载语音通话，减少通话回落 4G</string>
+    <string name="feat_vowifi">VoWiFi (WLAN 通话)</string>
+    <string name="feat_vowifi_desc">国内卡 (460) 默认关闭以避免 QNS IWLAN 死锁</string>
+    <string name="wfc_mode_label">首选通话网络</string>
+    <string name="wfc_mode_cellular">蜂窝优先 (推荐)</string>
+    <string name="wfc_mode_wifi">Wi-Fi 优先</string>
+    <string name="feat_cross_sim">跨 SIM 通话</string>
+    <string name="feat_cross_sim_desc">主副卡无信号时借用另一张卡的数据通道走 IMS</string>
+    <string name="feat_ut">UT 补充服务</string>
+    <string name="feat_ut_desc">支持通过 IMS 修改呼叫转移与来电等待设置</string>
+    <string name="feat_vt">ViLTE 视频通话</string>
+    <string name="feat_vt_desc">开启运营商原生 IMS 视频通话开关</string>
+
+    <string name="feat_5g_nr">解锁 5G NR (SA + NSA)</string>
+    <string name="feat_5g_nr_desc">解除未白名单运营商的独立/非独立组网 5G 限制</string>
+    <string name="feat_5g_thresholds">5G 信号格阈值优化</string>
+    <string name="feat_5g_thresholds_desc">优化 5G SSRSRP 显示刻度 (-128 ~ -98 dBm)</string>
+    <string name="feat_5g_plus">5G+ / 5GA 图标与频段</string>
+    <string name="feat_5g_plus_desc">补充国内 Sub-6 常见 NR 频段并启用 5G+ 状态识别</string>
+
+    <string name="action_apply_restart">应用并重注册 IMS</string>
+    <string name="action_apply_only">仅写入配置（不重启连接）</string>
+    <string name="action_restart_ims">仅重启此卡 IMS</string>
+    <string name="action_reset_default">恢复此卡默认配置</string>
+
+    <string name="action_logs">诊断日志</string>
+    <string name="log_dialog_title">诊断日志</string>
+    <string name="log_dialog_title_issue">异常诊断日志</string>
+    <string name="log_timeline_header">事件时间线 (%1$d)</string>
+    <string name="log_empty_hint">暂无运行日志。</string>
+    <string name="action_copy">复制</string>
+    <string name="action_copied">已复制</string>
+    <string name="action_share">分享</string>
+    <string name="action_clear">清空</string>
+    <string name="action_close">关闭</string>
+
+    <string name="msg_applied_restarted">配置已应用且 IMS 已重新注册</string>
+    <string name="msg_applied_only">已写入 CarrierConfig 配置</string>
+    <string name="msg_restarted">IMS 已重新注册</string>
+    <string name="msg_reset_done">已清除此卡所有自定义覆盖</string>
+    <string name="msg_reregister_timeout">10 秒内未能完成 IMS 注册，请排查诊断日志</string>
+    <string name="msg_shizuku_needed">请先运行并授权 Shizuku</string>
+</resources>

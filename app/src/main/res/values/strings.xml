@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel IMS</string>
+    <string name="sim_slot_label">SIM %1$d</string>
+    <string name="sim_empty_title">No Active SIM Found</string>
+    <string name="sim_empty_subtitle">Insert an active SIM card and tap Refresh.</string>
+    <string name="sim_waiting_shizuku_title">Shizuku Required</string>
+    <string name="sim_waiting_shizuku_subtitle">Start Shizuku and grant permission to read SIM and IMS state.</string>
+    <string name="sim_load_error_title">Failed to Read SIM Info</string>
+
+    <string name="shizuku_ready">Shizuku Ready</string>
+    <string name="shizuku_need_permission">Grant Shizuku</string>
+    <string name="shizuku_disconnected">Shizuku Offline</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="auto_apply_label">Auto-apply on Shizuku</string>
+    <string name="auto_apply_desc">Automatically restore saved per-SIM policies after reboot when Shizuku connects</string>
+
+    <string name="status_registered">IMS Registered</string>
+    <string name="status_registering">IMS Registering…</string>
+    <string name="status_not_registered">IMS Not Registered</string>
+    <string name="status_unknown">IMS Status Unknown</string>
+    <string name="transport_cellular">Cellular (LTE / NR)</string>
+    <string name="transport_wlan">Wi-Fi (IWLAN)</string>
+    <string name="transport_unknown">Unknown Transport</string>
+    <string name="override_applied">Override Active</string>
+    <string name="override_default">System Default</string>
+
+    <string name="warning_cn_vowifi_title">VoWiFi Risk on Mainland China SIM</string>
+    <string name="warning_cn_vowifi_body">VoWiFi or Wi-Fi Preferred is currently active on SIM (%1$s). Android 17 QNS may lock IMS to IWLAN and stall registration without a carrier ePDG. Disable VoWiFi and reapply.</string>
+    <string name="warning_wifi_pref_title">Wi-Fi Preferred May Stall IMS</string>
+    <string name="warning_wifi_pref_body">Switch WFC preference to Cellular Preferred so weak/captive Wi-Fi cannot block cellular IMS.</string>
+    <string name="action_fix_now">Disable VoWiFi &amp; Fix</string>
+
+    <string name="section_ims">Calls &amp; IMS Registration</string>
+    <string name="section_5g">5G &amp; Signal</string>
+
+    <string name="feat_volte">VoLTE</string>
+    <string name="feat_volte_desc">Enable 4G HD voice and opt-in provisioning</string>
+    <string name="feat_vonr">VoNR (5G Voice)</string>
+    <string name="feat_vonr_desc">Prefer voice calls over 5G NR without LTE fallback</string>
+    <string name="feat_vowifi">VoWiFi (Wi-Fi Calling)</string>
+    <string name="feat_vowifi_desc">Off by default for MCC 460 to avoid IWLAN deadlock</string>
+    <string name="wfc_mode_label">Preferred Network</string>
+    <string name="wfc_mode_cellular">Cellular Preferred</string>
+    <string name="wfc_mode_wifi">Wi-Fi Preferred</string>
+    <string name="feat_cross_sim">Cross-SIM Calling</string>
+    <string name="feat_cross_sim_desc">Route IMS calls/SMS via the other SIM data connection</string>
+    <string name="feat_ut">UT Supplementary Services</string>
+    <string name="feat_ut_desc">Enable call forwarding &amp; call waiting over IMS</string>
+    <string name="feat_vt">ViLTE Video Calling</string>
+    <string name="feat_vt_desc">Enable native carrier IMS video calls</string>
+
+    <string name="feat_5g_nr">Unlock 5G NR (SA + NSA)</string>
+    <string name="feat_5g_nr_desc">Enable Standalone and Non-Standalone 5G bands</string>
+    <string name="feat_5g_thresholds">5G Signal Thresholds</string>
+    <string name="feat_5g_thresholds_desc">Calibrate SSRSRP signal bars (-128 to -98 dBm)</string>
+    <string name="feat_5g_plus">5G+ / 5GA Icon &amp; Bands</string>
+    <string name="feat_5g_plus_desc">Enable Sub-6 CA 5G+ detection on common NR bands</string>
+
+    <string name="action_apply_restart">Apply &amp; Reregister</string>
+    <string name="action_apply_only">Apply Config Only</string>
+    <string name="action_restart_ims">Restart IMS Only</string>
+    <string name="action_reset_default">Reset SIM to Default</string>
+
+    <string name="action_logs">Diagnostics</string>
+    <string name="log_dialog_title">Diagnostics</string>
+    <string name="log_dialog_title_issue">IMS Diagnostics Needed</string>
+    <string name="log_timeline_header">Timeline (%1$d)</string>
+    <string name="log_empty_hint">No runtime events recorded yet.</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_copied">Copied</string>
+    <string name="action_share">Share</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_close">Close</string>
+
+    <string name="msg_applied_restarted">Policy applied and IMS registered</string>
+    <string name="msg_applied_only">CarrierConfig applied</string>
+    <string name="msg_restarted">IMS registered</string>
+    <string name="msg_reset_done">Cleared overrides for this SIM</string>
+    <string name="msg_reregister_timeout">IMS did not finish registering within 10s</string>
+    <string name="msg_shizuku_needed">Shizuku permission required</string>
+</resources>

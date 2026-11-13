@@ -1,0 +1,140 @@
+name: Release arm64-v8a APK
+
+# Optional repository secrets for production APK signing:
+#   KEYSTORE_BASE64      Base64-encoded JKS/PKCS12 keystore
+#   KEYSTORE_PASSWORD    Keystore store password
+#   KEY_ALIAS            Signing key alias
+#   KEY_PASSWORD         Signing key password
+# If unset, the release APK falls back to debug signing so zero-config builds still succeed.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag & version (e.g. v1.0.0). Leave empty to derive from run number."
+        required: false
+        type: string
+      prerelease:
+        description: "Mark as GitHub pre-release"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install Android 37 SDK & accept licenses
+        run: |
+          SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          SDKMANAGER="$(command -v sdkmanager || find "$SDK_ROOT/cmdline-tools" -name sdkmanager | sort -V | tail -n 1)"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" --install "platform-tools" "build-tools;37.0.0" "platforms;android-37.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Resolve version & tag metadata
+        id: meta
+        env:
+          INPUT_TAG: ${{ inputs.tag_name }}
+          INPUT_PRERELEASE: ${{ inputs.prerelease }}
+          REF_NAME: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          if [ "$REF_TYPE" = "tag" ]; then
+            tag="$REF_NAME"
+          elif [ -n "$INPUT_TAG" ]; then
+            tag="$INPUT_TAG"
+          else
+            tag="v1.0.0-r${RUN_NUMBER}"
+          fi
+
+          version_name="${tag#v}"
+          version_code="$RUN_NUMBER"
+          is_prerelease="false"
+          if [ "$INPUT_PRERELEASE" = "true" ] || [[ "$version_name" == *-* ]]; then
+            is_prerelease="true"
+          fi
+
+          echo "tag_name=$tag" >> "$GITHUB_OUTPUT"
+          echo "version_name=$version_name" >> "$GITHUB_OUTPUT"
+          echo "version_code=$version_code" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$is_prerelease" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare optional signing keystore
+        id: signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          STORE_PW: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PW: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$STORE_PW" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PW" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > "${RUNNER_TEMP}/release.jks"
+            echo "SIGNING_KEYSTORE_PATH=${RUNNER_TEMP}/release.jks" >> "$GITHUB_ENV"
+            echo "SIGNING_STORE_PASSWORD=${STORE_PW}" >> "$GITHUB_ENV"
+            echo "SIGNING_KEY_ALIAS=${KEY_ALIAS}" >> "$GITHUB_ENV"
+            echo "SIGNING_KEY_PASSWORD=${KEY_PW}" >> "$GITHUB_ENV"
+            echo "mode=release" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=debug-fallback" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run unit tests & build arm64-v8a Release APK
+        env:
+          VERSION_NAME: ${{ steps.meta.outputs.version_name }}
+          VERSION_CODE: ${{ steps.meta.outputs.version_code }}
+        run: |
+          ./gradlew --no-daemon :app:testDebugUnitTest :app:assembleRelease \
+            -PversionName="$VERSION_NAME" \
+            -PversionCode="$VERSION_CODE"
+
+      - name: Package & verify arm64-v8a release assets
+        env:
+          VERSION_NAME: ${{ steps.meta.outputs.version_name }}
+          SIGNING_MODE: ${{ steps.signing.outputs.mode }}
+        run: |
+          apk_in="app/build/outputs/apk/release/app-release.apk"
+          apk_name="Pixel-IMS-${VERSION_NAME}-arm64-v8a.apk"
+          mkdir -p dist
+          cp "$apk_in" "dist/${apk_name}"
+          (cd dist && sha256sum "${apk_name}" > "${apk_name}.sha256")
+          "$ANDROID_HOME/build-tools/37.0.0/aapt2" dump badging "dist/${apk_name}" | head -n 5
+          {
+            echo "### Pixel IMS Build Summary"
+            echo "- Artifact: \`${apk_name}\`"
+            echo "- ABI: \`arm64-v8a\`"
+            echo "- Signing: \`${SIGNING_MODE}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag_name }}
+          name: Pixel IMS ${{ steps.meta.outputs.tag_name }} (arm64-v8a)
+          prerelease: ${{ steps.meta.outputs.prerelease == 'true' }}
+          generate_release_notes: true
+          files: |
+            dist/Pixel-IMS-*.apk
+            dist/Pixel-IMS-*.apk.sha256

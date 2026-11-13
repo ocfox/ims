@@ -1,0 +1,11 @@
+-dontobfuscate
+-keepattributes *Annotation*,SourceFile,LineNumberTable
+-ignorewarnings
+
+-keep class dev.ocfox.ims.privileged.AutoApplyShizukuProvider { *; }
+-keep class dev.ocfox.ims.privileged.ImsInstrumentation { *; }
+-dontwarn android.app.**
+-dontwarn android.os.**
+-dontwarn android.telephony.**
+-dontwarn com.android.internal.telephony.**
+-dontwarn androidx.window.**
